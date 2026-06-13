@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Weather Dashboard</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+
+.weather-page{
+    padding:40px 0;
+}
+
+.weather-header{
+    background:linear-gradient(135deg,#2f6b3f,#4caf50);
+    color:white;
+    padding:40px;
+    border-radius:20px;
+    margin-bottom:25px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.15);
+}
+
+.weather-header h1{
+    font-size:2.5rem;
+    margin-bottom:10px;
+}
+
+.weather-header p{
+    opacity:.9;
+}
+
+.weather-search{
+    display:flex;
+    gap:15px;
+    margin-top:20px;
+    flex-wrap:wrap;
+}
+
+.weather-search select{
+    flex:1;
+    min-width:250px;
+    padding:14px;
+    border:none;
+    border-radius:12px;
+    font-size:16px;
+}
+
+.weather-search button{
+    padding:14px 20px;
+    border:none;
+    border-radius:12px;
+    background:#fff;
+    color:#2f6b3f;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.weather-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:20px;
+}
+
+.weather-box{
+    background:white;
+    padding:25px;
+    border-radius:18px;
+    text-align:center;
+    box-shadow:0 5px 15px rgba(0,0,0,0.08);
+}
+
+.weather-box h3{
+    color:#2f6b3f;
+    margin-bottom:15px;
+}
+
+.weather-value{
+    font-size:2rem;
+    font-weight:bold;
+}
+
+.main-weather{
+    background:white;
+    margin-bottom:25px;
+    padding:30px;
+    border-radius:20px;
+    text-align:center;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+}
+
+.main-weather h2{
+    color:#2f6b3f;
+}
+
+.temp{
+    font-size:4rem;
+    font-weight:bold;
+    color:#2f6b3f;
+}
+
+.condition{
+    font-size:1.3rem;
+    color:#666;
+}
+
+.back-btn{
+    display:inline-block;
+    margin-bottom:20px;
+    color:#2f6b3f;
+    font-weight:bold;
+    text-decoration:none;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container weather-page">
+
+<a href="index.html" class="back-btn">
+← Back To Dashboard
+</a>
+
+<div class="weather-header">
+
+<h1>🌤 Weather Dashboard</h1>
+
+<p>
+Real-Time Weather Information For Maharashtra Farmers
+</p>
+
+<div class="weather-search">
+
+<select id="districtSelect">
+
+<option value="Pune">Pune</option>
+<option value="Nashik">Nashik</option>
+<option value="Nagpur">Nagpur</option>
+<option value="Kolhapur">Kolhapur</option>
+<option value="Sangli">Sangli</option>
+<option value="Satara">Satara</option>
+<option value="Solapur">Solapur</option>
+<option value="Latur">Latur</option>
+<option value="Nanded">Nanded</option>
+
+</select>
+
+<button onclick="getWeather()">
+Get Weather
+</button>
+
+</div>
+
+</div>
+
+<div class="main-weather">
+
+<h2 id="cityName">Pune</h2>
+
+<div class="temp" id="temperature">
+--
+</div>
+
+<div class="condition" id="condition">
+Loading...
+</div>
+
+</div>
+
+<div class="weather-grid">
+
+<div class="weather-box">
+<h3>💧 Humidity</h3>
+<div class="weather-value" id="humidity">
+--
+</div>
+</div>
+
+<div class="weather-box">
+<h3>💨 Wind Speed</h3>
+<div class="weather-value" id="windSpeed">
+--
+</div>
+</div>
+
+<div class="weather-box">
+<h3>🌧 Rainfall</h3>
+<div class="weather-value" id="rainfall">
+--
+</div>
+</div>
+
+<div class="weather-box">
+<h3>🌡 Feels Like</h3>
+<div class="weather-value" id="feelsLike">
+--
+</div>
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+const API_KEY="b9a90af29fb656c2da4f05f9275bb548";
+
+async function getWeather(){
+
+const city=
+document.getElementById("districtSelect").value;
+
+document.getElementById("cityName").innerText=city;
+
+try{
+
+const response=await fetch(
+`https://api.openweathermap.org/data/2.5/weather?q=${city},IN&appid=${API_KEY}&units=metric`
+);
+
+const data=await response.json();
+
+document.getElementById("temperature").innerHTML=
+Math.round(data.main.temp)+"°C";
+
+document.getElementById("condition").innerHTML=
+data.weather[0].description;
+
+document.getElementById("humidity").innerHTML=
+data.main.humidity+"%";
+
+document.getElementById("windSpeed").innerHTML=
+data.wind.speed+" m/s";
+
+document.getElementById("rainfall").innerHTML=
+data.rain ? data.rain["1h"]+" mm" : "0 mm";
+
+document.getElementById("feelsLike").innerHTML=
+Math.round(data.main.feels_like)+"°C";
+
+}
+catch(error){
+
+console.log(error);
+
+alert("Weather Data Not Available");
+
+}
+
+}
+
+window.onload=getWeather;
+
+</script>
+
+</body>
+</html>
