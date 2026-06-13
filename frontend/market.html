@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market Prices - Maharashtra Agriculture</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="navbar">
+        <div class="container">
+            <div class="logo">🌾 Maharashtra Agriculture</div>
+            <nav class="nav-menu">
+                <a href="index.html">Dashboard</a>
+                <a href="market.html" class="active">Market Prices</a>
+                <a href="disease.html">Disease Detection</a>
+                <a href="predictions.html">Predictions</a>
+            </nav>
+            <div class="auth-menu">
+                <button onclick="openLoginModal()" id="loginBtn" class="btn btn-primary">Login</button>
+                <button onclick="logout()" id="logoutBtn" class="btn btn-secondary" style="display:none;">Logout</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="hero-section">
+        <div class="hero-content">
+            <h1>Bajar Bhav - Market Prices</h1>
+            <p>Real-time mandi rates for Maharashtra crops</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="filters">
+            <select id="districtSelect" onchange="updateMarketPrices()">
+                <option value="">Select District</option>
+                <option value="Pune">Pune</option>
+                <option value="Nashik">Nashik</option>
+                <option value="Nagpur">Nagpur</option>
+                <option value="Kolhapur">Kolhapur</option>
+                <option value="Sangli">Sangli</option>
+            </select>
+
+            <select id="cropSelect" onchange="updateMarketPrices()">
+                <option value="">Select Crop</option>
+                <option value="Soybean">Soybean</option>
+                <option value="Cotton">Cotton</option>
+                <option value="Sugarcane">Sugarcane</option>
+                <option value="Onion">Onion</option>
+                <option value="Tomato">Tomato</option>
+                <option value="Wheat">Wheat</option>
+                <option value="Rice">Rice</option>
+                <option value="Grapes">Grapes</option>
+                <option value="Pomegranate">Pomegranate</option>
+                <option value="Tur">Tur</option>
+                <option value="Chana">Chana</option>
+            </select>
+
+            <button onclick="refreshPrices()" class="btn btn-info">🔄 Refresh</button>
+        </div>
+
+        <div id="pricesLoading" class="loading">Loading market prices...</div>
+        <div id="pricesContent" style="display:none;">
+            <table class="prices-table">
+                <thead>
+                    <tr>
+                        <th>Market</th>
+                        <th>Crop</th>
+                        <th>Today (₹)</th>
+                        <th>Min (₹)</th>
+                        <th>Max (₹)</th>
+                        <th>Modal (₹)</th>
+                        <th>Last Updated</th>
+                    </tr>
+                </thead>
+                <tbody id="pricesTableBody">
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card" style="margin-top:2rem;">
+            <h3>📊 Price Trends (Last 30 Days)</h3>
+            <canvas id="priceChart"></canvas>
+        </div>
+    </div>
+
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeLoginModal()">&times;</span>
+            <h2>Login</h2>
+            <form id="authForm">
+                <input type="email" id="authEmail" placeholder="Email" required>
+                <input type="password" id="authPassword" placeholder="Password" required>
+                <button type="submit" class="btn btn-primary" style="width:100%;">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Maharashtra Agriculture</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/market.js"></script>
+</body>
+</html>

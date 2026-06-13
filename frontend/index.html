@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maharashtra Agriculture - Smart Farming Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="navbar">
+        <div class="container">
+            <div class="logo">🌾 Maharashtra Agriculture</div>
+            <nav class="nav-menu">
+                <a href="index.html" class="active">Dashboard</a>
+                <a href="market.html">Market Prices</a>
+                <a href="disease.html">Disease Detection</a>
+                <a href="predictions.html">Predictions</a>
+            </nav>
+            <div class="auth-menu">
+                <button onclick="openLoginModal()" id="loginBtn" class="btn btn-primary">Login</button>
+                <button onclick="logout()" id="logoutBtn" class="btn btn-secondary" style="display:none;">Logout</button>
+                <span id="userNameDisplay"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="hero-section">
+        <div class="hero-content">
+            <h1>Smart Farming Dashboard</h1>
+            <p>Real-time weather, market prices, and AI-powered predictions for Maharashtra farmers</p>
+            <div class="location-selector">
+                <select id="districtSelect" onchange="updateDashboard()">
+                    <option value="">Select District</option>
+                    <option value="Pune">Pune</option>
+                    <option value="Nashik">Nashik</option>
+                    <option value="Nagpur">Nagpur</option>
+                    <option value="Kolhapur">Kolhapur</option>
+                    <option value="Sangli">Sangli</option>
+                    <option value="Satara">Satara</option>
+                    <option value="Solapur">Solapur</option>
+                    <option value="Ahilyanagar">Ahilyanagar</option>
+                    <option value="Chhatrapati Sambhajinagar">Chhatrapati Sambhajinagar</option>
+                    <option value="Jalgaon">Jalgaon</option>
+                    <option value="Amravati">Amravati</option>
+                    <option value="Wardha">Wardha</option>
+                    <option value="Yavatmal">Yavatmal</option>
+                    <option value="Akola">Akola</option>
+                    <option value="Buldhana">Buldhana</option>
+                    <option value="Latur">Latur</option>
+                    <option value="Nanded">Nanded</option>
+                    <option value="Parbhani">Parbhani</option>
+                    <option value="Osmanabad">Osmanabad</option>
+                    <option value="Dhule">Dhule</option>
+                    <option value="Nandurbar">Nandurbar</option>
+                </select>
+                <button onclick="autoDetectLocation()" class="btn btn-info">📍 Auto Detect</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container dashboard">
+        <div class="grid-2">
+            <div class="card weather-card">
+                <h3>🌤️ Current Weather</h3>
+                <div id="weatherLoading" class="loading">Loading...</div>
+                <div id="weatherContent" style="display:none;">
+                    <div class="weather-main">
+                        <div class="temp-display"><span id="temperature">--</span>°C</div>
+                        <div id="condition" class="condition">--</div>
+                    </div>
+                    <div class="weather-grid">
+                        <div class="weather-item">
+                            <span class="label">Humidity</span>
+                            <span id="humidity" class="value">--%</span>
+                        </div>
+                        <div class="weather-item">
+                            <span class="label">Wind Speed</span>
+                            <span id="windSpeed" class="value">-- m/s</span>
+                        </div>
+                        <div class="weather-item">
+                            <span class="label">Rainfall</span>
+                            <span id="rainfall" class="value">-- mm</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card risk-card">
+                <h3>⚠️ Risk Assessment</h3>
+                <div id="riskLoading" class="loading">Loading...</div>
+                <div id="riskContent" style="display:none;">
+                    <div class="risk-level" id="riskLevel">--</div>
+                    <div class="risk-score">
+                        <span>Risk Score:</span>
+                        <span id="riskScore">--</span>
+                    </div>
+                    <div class="risk-factors">
+                        <div class="risk-factor">
+                            <span>Rainfall Risk</span>
+                            <div class="progress-bar">
+                                <div id="rainfallRisk" class="progress" style="width:0%"></div>
+                            </div>
+                        </div>
+                        <div class="risk-factor">
+                            <span>Pest Risk</span>
+                            <div class="progress-bar">
+                                <div id="pestRisk" class="progress" style="width:0%"></div>
+                            </div>
+                        </div>
+                        <div class="risk-factor">
+                            <span>Market Risk</span>
+                            <div class="progress-bar">
+                                <div id="marketRisk" class="progress" style="width:0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid-2">
+            <div class="card">
+                <h3>💹 Top Crops by Price</h3>
+                <canvas id="cropPriceChart"></canvas>
+            </div>
+
+            <div class="card">
+                <h3>📰 Latest Agriculture News</h3>
+                <div id="newsLoading" class="loading">Loading...</div>
+                <div id="newsContent" style="display:none;">
+                    <div id="newsList" class="news-list"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid-1">
+            <div class="card">
+                <h3>🏛️ Government Schemes</h3>
+                <div id="schemesLoading" class="loading">Loading...</div>
+                <div id="schemesContent" style="display:none;">
+                    <div id="schemesList" class="schemes-list"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeLoginModal()">&times;</span>
+            <h2>Login / Signup</h2>
+            <form id="authForm">
+                <input type="email" id="authEmail" placeholder="Email" required>
+                <input type="password" id="authPassword" placeholder="Password" required>
+                <input type="text" id="authUsername" placeholder="Username (Signup)" style="display:none;">
+                <input type="text" id="authFullName" placeholder="Full Name (Signup)" style="display:none;">
+                <button type="submit" class="btn btn-primary" style="width:100%;">Login</button>
+                <p class="auth-toggle">Don't have an account? <a href="#" onclick="toggleAuthMode()">Sign Up</a></p>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Maharashtra Agriculture - Supporting Farmers with Real-time Data</p>
+    </footer>
+
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
