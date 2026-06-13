@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Crop Profit Prediction</title>
+
+<link rel="stylesheet" href="style.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<header>
+
+<div class="logo">
+🌾 AgriSmart AI
+</div>
+
+<nav>
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="profit.html">Profit</a></li>
+<li><a href="risk.html">Risk</a></li>
+<li><a href="stress.html">Stress</a></li>
+<li><a href="weather.html">Weather</a></li>
+<li><a href="expenses.html">Expenses</a></li>
+</ul>
+</nav>
+
+</header>
+
+<section class="page-banner">
+
+<h1>🌾 Crop Profit Prediction</h1>
+
+<p>
+Predict expected crop profit using AI and market data.
+</p>
+
+</section>
+
+<section class="form-section">
+
+<div class="prediction-form">
+
+<h2>Enter Farm Details</h2>
+
+<form id="profitForm">
+
+<div class="grid-2">
+
+<div class="input-group">
+<label>Crop Name</label>
+<select id="crop">
+<option>Wheat</option>
+<option>Rice</option>
+<option>Sugarcane</option>
+<option>Cotton</option>
+<option>Soybean</option>
+<option>Maize</option>
+</select>
+</div>
+
+<div class="input-group">
+<label>Market Price (₹/Quintal)</label>
+<input type="number" id="marketPrice">
+</div>
+
+<div class="input-group">
+<label>Rainfall (mm)</label>
+<input type="number" id="rainfall">
+</div>
+
+<div class="input-group">
+<label>Temperature (°C)</label>
+<input type="number" id="temperature">
+</div>
+
+<div class="input-group">
+<label>Nitrogen (N)</label>
+<input type="number" id="nitrogen">
+</div>
+
+<div class="input-group">
+<label>Phosphorus (P)</label>
+<input type="number" id="phosphorus">
+</div>
+
+<div class="input-group">
+<label>Potassium (K)</label>
+<input type="number" id="potassium">
+</div>
+
+<div class="input-group">
+<label>Farm Area (Acres)</label>
+<input type="number" id="area">
+</div>
+
+</div>
+
+<button class="submit-btn">
+Predict Profit
+</button>
+
+</form>
+
+</div>
+
+</section>
+
+<section class="result-section">
+
+<h2>Prediction Results</h2>
+
+<div class="result-grid">
+
+<div class="result-card">
+
+<h3>Expected Profit</h3>
+
+<h1 id="profitAmount">
+₹0
+</h1>
+
+</div>
+
+<div class="result-card">
+
+<h3>Recommended Crop</h3>
+
+<h1 id="recommendedCrop">
+--
+</h1>
+
+</div>
+
+<div class="result-card">
+
+<h3>Profitability Score</h3>
+
+<h1 id="profitScore">
+0%
+</h1>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="chart-section">
+
+<h2>Profit Analysis</h2>
+
+<canvas id="profitChart"></canvas>
+
+</section>
+
+<script src="script.js"></script>
+
+<script>
+
+const profitForm =
+document.getElementById("profitForm");
+
+profitForm.addEventListener("submit", async(e)=>{
+
+e.preventDefault();
+
+/*
+FLASK API
+
+POST /predict-profit
+
+*/
+
+const response = {
+profit:85000,
+crop:"Soybean",
+score:89
+};
+
+document.getElementById("profitAmount")
+.innerText = "₹"+response.profit;
+
+document.getElementById("recommendedCrop")
+.innerText = response.crop;
+
+document.getElementById("profitScore")
+.innerText = response.score+"%";
+
+renderProfitChart();
+
+});
+
+function renderProfitChart(){
+
+const ctx =
+document.getElementById("profitChart");
+
+new Chart(ctx,{
+
+type:"bar",
+
+data:{
+labels:[
+'Current',
+'Expected',
+'Best Case'
+],
+
+datasets:[{
+
+label:'Profit',
+
+data:[
+45000,
+85000,
+110000
+]
+
+}]
+}
+
+});
+
+}
+
+</script>
+
+</body>
+</html>

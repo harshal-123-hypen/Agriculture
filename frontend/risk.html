@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Crop Risk Prediction</title>
+
+<link rel="stylesheet" href="style.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<header>
+
+<div class="logo">
+🌾 AgriSmart AI
+</div>
+
+<nav>
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="profit.html">Profit</a></li>
+<li><a href="risk.html">Risk</a></li>
+<li><a href="stress.html">Stress</a></li>
+<li><a href="weather.html">Weather</a></li>
+<li><a href="expenses.html">Expenses</a></li>
+</ul>
+</nav>
+
+</header>
+
+<section class="page-banner">
+
+<h1>
+⚠ Crop Risk Prediction
+</h1>
+
+<p>
+Analyze weather, soil and market risks.
+</p>
+
+</section>
+
+<section class="form-section">
+
+<div class="prediction-form">
+
+<h2>
+Risk Assessment
+</h2>
+
+<form id="riskForm">
+
+<div class="grid-2">
+
+<div class="input-group">
+<label>Rainfall (mm)</label>
+<input type="number">
+</div>
+
+<div class="input-group">
+<label>Temperature (°C)</label>
+<input type="number">
+</div>
+
+<div class="input-group">
+<label>Humidity (%)</label>
+<input type="number">
+</div>
+
+<div class="input-group">
+<label>Soil Quality</label>
+
+<select>
+
+<option>Excellent</option>
+<option>Good</option>
+<option>Average</option>
+<option>Poor</option>
+
+</select>
+
+</div>
+
+<div class="input-group">
+<label>Market Trend</label>
+
+<select>
+
+<option>Growing</option>
+<option>Stable</option>
+<option>Declining</option>
+
+</select>
+
+</div>
+
+<div class="input-group">
+<label>Crop Type</label>
+
+<select>
+
+<option>Rice</option>
+<option>Wheat</option>
+<option>Cotton</option>
+<option>Soybean</option>
+
+</select>
+
+</div>
+
+</div>
+
+<button class="submit-btn">
+
+Analyze Risk
+
+</button>
+
+</form>
+
+</div>
+
+</section>
+
+<section class="risk-results">
+
+<div class="risk-meter">
+
+<h2>
+Risk Level
+</h2>
+
+<div id="riskBadge"
+class="medium-risk">
+
+MEDIUM
+
+</div>
+
+</div>
+
+<div class="result-grid">
+
+<div class="result-card">
+
+<h3>
+Weather Risk
+</h3>
+
+<h1>
+42%
+</h1>
+
+</div>
+
+<div class="result-card">
+
+<h3>
+Market Risk
+</h3>
+
+<h1>
+30%
+</h1>
+
+</div>
+
+<div class="result-card">
+
+<h3>
+Overall Risk
+</h3>
+
+<h1 id="overallRisk">
+
+55%
+
+</h1>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="chart-section">
+
+<h2>
+Risk Analysis
+</h2>
+
+<canvas id="riskChart"></canvas>
+
+</section>
+
+<section class="recommendations">
+
+<h2>
+AI Recommendations
+</h2>
+
+<div class="recommendation-box">
+
+<ul>
+
+<li>
+Increase irrigation frequency.
+</li>
+
+<li>
+Monitor weather alerts.
+</li>
+
+<li>
+Use crop insurance.
+</li>
+
+<li>
+Diversify crop selection.
+</li>
+
+</ul>
+
+</div>
+
+</section>
+
+<script src="script.js"></script>
+
+<script>
+
+const riskForm =
+document.getElementById("riskForm");
+
+riskForm.addEventListener("submit",(e)=>{
+
+e.preventDefault();
+
+/*
+
+POST /predict-risk
+
+*/
+
+document.getElementById("riskBadge")
+.innerHTML="LOW";
+
+document.getElementById("riskBadge")
+.className="low-risk";
+
+renderRiskChart();
+
+});
+
+function renderRiskChart(){
+
+const ctx =
+document.getElementById("riskChart");
+
+new Chart(ctx,{
+
+type:"doughnut",
+
+data:{
+
+labels:[
+"Weather",
+"Market",
+"Soil"
+],
+
+datasets:[{
+
+data:[
+40,
+25,
+35
+]
+
+}]
+
+}
+
+});
+
+}
+
+</script>
+
+</body>
+</html>
